@@ -12,6 +12,6 @@ class PlatoSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\Plato::factory(30)->create();
     }
 }

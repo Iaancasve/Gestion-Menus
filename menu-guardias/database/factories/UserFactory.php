@@ -29,7 +29,18 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            // Asigna un servicio de los que ya existen en la base de datos
+            'servicio_id' => \App\Models\Servicio::query()->inRandomOrder()->first()?->id ?? 1,
+            // Por defecto, los usuarios creados con factory NO serán admins
+            'es_admin' => false,
         ];
+    }
+
+    public function admin(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'es_admin' => true,
+        ]);
     }
 
     /**
@@ -37,7 +48,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }

@@ -15,11 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        //Primero los servicios (porque los usuarios los necesitan)
+        $this->call(ServicioSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        //Luego los platos
+        $this->call(PlatoSeeder::class);
+
+        //Por último los usuarios (que se vinculan a los servicios creados)
+        $this->call(UserSeeder::class);
     }
 }

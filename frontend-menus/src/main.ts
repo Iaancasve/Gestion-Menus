@@ -1,23 +1,43 @@
 import './style.css'
 import { authService } from './auth/authService';
 import { renderLoginForm } from './components/loginForm';
+import { renderNavbar } from './components/navBar';
+import { renderAdminPanel } from './components/adminPanel';
 
 const appDiv = document.querySelector<HTMLDivElement>('#app')!;
 
 function init() {
+    appDiv.innerHTML = ''; 
+
     if (!authService.isAuthenticated()) {
         renderLoginForm(appDiv);
     } else {
-        const user = JSON.parse(localStorage.getItem('user_info') || '{}');
-        appDiv.innerHTML = `
-            <h1>Hola, ${user.name}</h1>
-            <p>${user.isAdmin ? 'Eres Administrador' : 'Eres Guardia'}</p>
-            <button id="logout-btn">Cerrar Sesión</button>
-        `;
+        // Renderizar Navbar una sola vez
+        renderNavbar(appDiv, (page) => navigateTo(page));
+
+        const mainContent = document.createElement('main');
+        mainContent.id = 'main-view';
+        mainContent.className = 'container';
+        appDiv.appendChild(mainContent);
+
         
-        document.getElementById('logout-btn')?.addEventListener('click', () => {
-            authService.logout();
-        });
+        navigateTo('home');
+    }
+}
+
+function navigateTo(page: string) {
+    const mainView = document.getElementById('main-view')!;
+    mainView.innerHTML = ''; 
+
+    if (page === 'home') {
+        mainView.innerHTML = `
+            <div class="welcome-card">
+                <h1>Bienvenido al Sistema de Menús</h1>
+                <p>Utiliza el menú superior para navegar por las opciones disponibles.</p>
+            </div>
+        `;
+    } else if (page === 'admin') {
+        renderAdminPanel(mainView);
     }
 }
 

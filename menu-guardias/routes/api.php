@@ -5,12 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 
-// Ruta pública
+// Ruta pública de login
 Route::post('/login', [AuthController::class, 'login']);
 
-// Grupo de rutas protegidas por Token 
+// Rutas protegidas por Sanctum
 Route::middleware('auth:sanctum')->group(function () {
     
+    // Solo accesible para usuarios con habilidad 'admin' 
     Route::middleware('ability:admin')->group(function () {
         Route::apiResource('usuarios', UserController::class);
     });

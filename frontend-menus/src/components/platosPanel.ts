@@ -13,14 +13,17 @@ export async function renderPlatosPanel(container: HTMLElement) {
                 <h3 id="plato-form-title">Crear Plato</h3>
                 <form id="plato-form">
                     <input type="hidden" id="plato-id">
-                    <input type="text" id="plato-nombre" placeholder="Nombre del plato" required>
-                    <select id="plato-tipo" required>
-                        <option value="Primero">Primero</option>
-                        <option value="Segundo">Segundo</option>
-                        <option value="Postre">Postre</option>
-                    </select>
-                    <div style="grid-column: span 2;">
-                        <textarea id="plato-descripcion" placeholder="Descripción del plato (opcional)"></textarea>
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" id="plato-nombre" placeholder="Nombre del plato" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select id="plato-tipo" required>
+                            <option value="Primero">Primero</option>
+                            <option value="Segundo">Segundo</option>
+                            <option value="Postre">Postre</option>
+                        </select>
                     </div>
                     <div class="form-btns">
                         <button type="submit" class="btn-save">Guardar</button>
@@ -32,14 +35,13 @@ export async function renderPlatosPanel(container: HTMLElement) {
             <table class="user-table">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Tipo</th>
-                        <th>Descripción</th>
-                        <th>Acciones</th>
+                        <th>Nombre del Plato</th>
+                        <th>Tipo / Categoría</th>
+                        <th style="text-align: right;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="platos-list">
-                    <tr><td colspan="4">Cargando platos...</td></tr>
+                    <tr><td colspan="3">Cargando catálogo...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -64,8 +66,7 @@ export async function renderPlatosPanel(container: HTMLElement) {
         const id = (document.getElementById('plato-id') as HTMLInputElement).value;
         const platoData: Plato = {
             nombre: (document.getElementById('plato-nombre') as HTMLInputElement).value,
-            tipo: (document.getElementById('plato-tipo') as HTMLSelectElement).value as any,
-            descripcion: (document.getElementById('plato-descripcion') as HTMLTextAreaElement).value
+            tipo: (document.getElementById('plato-tipo') as HTMLSelectElement).value as any
         };
 
         if (id) {
@@ -85,8 +86,7 @@ async function loadPlatos() {
         <tr>
             <td><strong>${p.nombre}</strong></td>
             <td><span class="plato-badge">${p.tipo}</span></td>
-            <td>${p.descripcion || '-'}</td>
-            <td>
+            <td style="text-align: right;">
                 <button onclick="editPlato(${p.id})" class="btn-edit">✏️</button>
                 <button onclick="deletePlato(${p.id})" class="btn-delete">🗑️</button>
             </td>
@@ -94,7 +94,6 @@ async function loadPlatos() {
     `).join('');
 }
 
-// Funciones globales para los botones de la tabla
 (window as any).editPlato = async (id: number) => {
     const platos = await platoService.getAll();
     const plato = platos.find(p => p.id === id);
@@ -102,7 +101,6 @@ async function loadPlatos() {
         (document.getElementById('plato-id') as HTMLInputElement).value = String(plato.id);
         (document.getElementById('plato-nombre') as HTMLInputElement).value = plato.nombre;
         (document.getElementById('plato-tipo') as HTMLSelectElement).value = plato.tipo;
-        (document.getElementById('plato-descripcion') as HTMLTextAreaElement).value = plato.descripcion || '';
         document.getElementById('plato-form-title')!.innerText = 'Editar Plato';
         document.getElementById('plato-form-container')!.style.display = 'block';
     }

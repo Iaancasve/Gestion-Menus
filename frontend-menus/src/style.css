@@ -1,3 +1,6 @@
+/* =========================================
+   1. VARIABLES Y ESTILOS BASE
+   ========================================= */
 :root {
   --primary-color: #2563eb;
   --primary-hover: #1d4ed8;
@@ -5,6 +8,7 @@
   --text-color: #1f2937;
   --border-color: #d1d5db;
   --white: #ffffff;
+  --danger-color: #ef4444;
 }
 
 body {
@@ -15,9 +19,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
+/* =========================================
+   2. PÁGINA DE LOGIN
+   ========================================= */
 .login-container {
   background: var(--white);
   padding: 2.5rem;
@@ -41,7 +48,6 @@ body {
   gap: 1.2rem;
 }
 
-/* Estilo para los inputs */
 #login-form input {
   padding: 0.75rem 1rem;
   border: 1px solid var(--border-color);
@@ -56,7 +62,6 @@ body {
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
-/* Estilo para el botón */
 #login-form button {
   background-color: var(--primary-color);
   color: white;
@@ -83,7 +88,9 @@ body {
   text-align: center;
 }
 
-/* Navbar */
+/* =========================================
+   3. BARRA DE NAVEGACIÓN
+   ========================================= */
 .navbar {
   background: #ffffff;
   border-bottom: 1px solid #e5e7eb;
@@ -93,6 +100,7 @@ body {
   top: 0;
   left: 0;
   box-sizing: border-box;
+  z-index: 1000;
 }
 
 .nav-content {
@@ -103,10 +111,33 @@ body {
   margin: 0 auto;
 }
 
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
 .logo {
   font-weight: 800;
   color: var(--primary-color);
   font-size: 1.25rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+  color: var(--primary-color);
 }
 
 .user-menu {
@@ -129,64 +160,15 @@ body {
   background: #fecaca;
 }
 
-/* Dashboard */
+/* =========================================
+   4. CONTENEDOR PRINCIPAL Y TABLAS (ADMIN)
+   ========================================= */
 .container {
-  margin-top: 80px;
-  /* Espacio para que la navbar no tape el contenido */
+  margin-top: 100px;
   padding: 2rem;
   width: 100%;
   max-width: 1200px;
-}
-
-.btn-primary {
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-right: 0.5rem;
-}
-
-.mt-4 {
-  margin-top: 1.5rem;
-}
-
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-
-.nav-links {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: var(--text-color);
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: color 0.2s;
-}
-
-.nav-links a:hover {
-  color: var(--primary-color);
-}
-
-.welcome-card {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-/* Para que el enlace se vea activo (opcional) */
-.nav-links a.active {
-  color: var(--primary-color);
-  border-bottom: 2px solid var(--primary-color);
+  align-self: flex-start;
 }
 
 .admin-container {
@@ -205,78 +187,136 @@ body {
   width: 100%;
   border-collapse: collapse;
   background: white;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.user-table th,
-.user-table td {
-  padding: 1rem;
+.user-table th, .user-table td {
+  padding: 1.2rem;
   text-align: left;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .user-table th {
   background: #f8fafc;
   font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  font-size: 0.75rem;
 }
 
+.btn-primary {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-edit, .btn-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 4px;
+}
+
+.plato-badge {
+    background: #e0e7ff;
+    color: #4338ca;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* =========================================
+   5. FORMULARIOS (USUARIOS Y PLATOS)
+   ========================================= */
 .form-card {
   background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
+  padding: 2rem;
+  border-radius: 12px;
   margin-bottom: 2rem;
   border: 1px solid var(--primary-color);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
 }
 
-#user-form {
+/* Estilo Grid para los formularios */
+#user-form, #plato-form {
   display: grid;
-  gap: 1rem;
+  gap: 1.2rem;
   grid-template-columns: 1fr 1fr;
 }
 
-#user-form input,
-#user-form select {
-  padding: 0.6rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+/* Campos de texto, select y textarea */
+#user-form input, #user-form select,
+#plato-form input, #plato-form select, #plato-form textarea {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+}
+
+#user-form input:focus, #plato-form input:focus, 
+#plato-form select:focus, #plato-form textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+#plato-form textarea {
+  min-height: 80px;
+  font-family: inherit;
+  resize: vertical;
 }
 
 .form-btns {
   grid-column: span 2;
   display: flex;
+  justify-content: flex-end;
   gap: 1rem;
-}
-
-.btn-edit {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2rem;
-}
-
-.btn-delete {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2rem;
+  margin-top: 0.5rem;
 }
 
 .btn-save {
   background: var(--primary-color);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
 }
 
 .btn-cancel {
-  background: #64748b;
-  color: white;
+  background: #f1f5f9;
+  color: #64748b;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
+}
+
+/* =========================================
+   6. OTROS (MISC)
+   ========================================= */
+.welcome-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.error {
+  color: var(--danger-color);
+  font-weight: 500;
 }

@@ -11,7 +11,9 @@ export function renderNavbar(container: HTMLElement, onNavigate: (page: string) 
                 <span class="logo">Gestión Menús</span>
                 <div class="nav-links">
                     <a href="#" id="link-home">Inicio</a>
-                    ${userInfo.isAdmin ? '<a href="#" id="link-admin">Panel Administrador</a>' : ''}
+                    ${userInfo.isAdmin ? `
+                        <a href="#" id="link-admin">Usuarios</a>
+                        <a href="#" id="link-platos">Platos</a> ` : ''}
                 </div>
             </div>
             <div class="user-menu">
@@ -32,6 +34,12 @@ export function renderNavbar(container: HTMLElement, onNavigate: (page: string) 
     document.getElementById('link-admin')?.addEventListener('click', (e) => {
         e.preventDefault();
         onNavigate('admin');
+    });
+
+    // Evento para el nuevo enlace de Platos
+    document.getElementById('link-platos')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        onNavigate('platos');
     });
 
     document.getElementById('logout-btn')?.addEventListener('click', () => {

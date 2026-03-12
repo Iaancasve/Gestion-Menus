@@ -10,14 +10,17 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('menu_diario', function (Blueprint $table) {
-            $table->id();
-            $table->enum('dia_semana', ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']);
-            $table->foreignId('plato_id')->constrained('platos')->onDelete('cascade');
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('menu_diario', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('plato_id')->constrained('platos')->onDelete('cascade');
+        $table->date('fecha');
+        $table->timestamps();
+        
+        // Un plato no puede estar dos veces el mismo día
+        $table->unique(['plato_id', 'fecha']);
+    });
+}
 
     /**
      * Reverse the migrations.

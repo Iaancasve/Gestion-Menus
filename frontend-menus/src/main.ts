@@ -1,7 +1,7 @@
 import './style.css'
 import { authService } from './auth/authService';
 import { renderLoginForm } from './components/loginForm';
-import { renderNavbar } from './components/navBar';
+import { renderNavbar } from './components/navbar';
 import { renderAdminPanel } from './components/adminPanel';
 
 const appDiv = document.querySelector<HTMLDivElement>('#app')!;

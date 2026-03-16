@@ -4,6 +4,7 @@ import { renderLoginForm } from './components/loginForm';
 import { renderNavbar } from './components/navbar';
 import { renderAdminPanel } from './components/adminPanel';
 import { renderPlatosPanel } from './components/platosPanel';
+import { renderMenuPanel } from './components/menuPanel';
 
 const appDiv = document.querySelector<HTMLDivElement>('#app')!;
 
@@ -40,7 +41,9 @@ function navigateTo(page: string) {
     } else if (page === 'admin') {
         renderAdminPanel(mainView);
     } else if (page === 'platos') {
-        renderPlatosPanel(mainView); // 
+        renderPlatosPanel(mainView); 
+    }  else if (page === 'menu') {
+        renderMenuPanel(mainView);
     }
 }
 

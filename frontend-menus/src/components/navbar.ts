@@ -13,7 +13,8 @@ export function renderNavbar(container: HTMLElement, onNavigate: (page: string) 
                     <a href="#" id="link-home">Inicio</a>
                     ${userInfo.isAdmin ? `
                         <a href="#" id="link-admin">Usuarios</a>
-                        <a href="#" id="link-platos">Platos</a> ` : ''}
+                        <a href="#" id="link-platos">Platos</a>
+                        <a href="#" id="link-menu">Menú del Día</a> ` : ''}
                 </div>
             </div>
             <div class="user-menu">
@@ -36,10 +37,15 @@ export function renderNavbar(container: HTMLElement, onNavigate: (page: string) 
         onNavigate('admin');
     });
 
-    // Evento para el nuevo enlace de Platos
     document.getElementById('link-platos')?.addEventListener('click', (e) => {
         e.preventDefault();
         onNavigate('platos');
+    });
+
+    // Evento para el nuevo enlace de Menú del Día
+    document.getElementById('link-menu')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        onNavigate('menu');
     });
 
     document.getElementById('logout-btn')?.addEventListener('click', () => {

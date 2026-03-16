@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PlatoController;
+use App\Http\Controllers\Api\MenuDiarioController;
 
 // Ruta pública de login
 Route::post('/login', [AuthController::class, 'login']);
@@ -16,6 +17,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('ability:admin')->group(function () {
         Route::apiResource('usuarios', UserController::class);
         Route::apiResource('platos', PlatoController::class);
+        
+        // Rutas para el Menú Diario
+        Route::get('menu-hoy', [MenuDiarioController::class, 'index']);
+        Route::post('menu-hoy', [MenuDiarioController::class, 'store']);
+        Route::delete('menu-hoy/{id}', [MenuDiarioController::class, 'destroy']);
     });
     
 });

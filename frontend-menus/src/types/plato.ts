@@ -1,10 +1,8 @@
 export interface Plato {
-    id?: number;
+    id: number;
     nombre: string;
-    tipo: 'Primero' | 'Segundo' | 'Postre';
-    descripcion?: string;
-    created_at?: string;
-    updated_at?: string;
+    tipo: 'primero' | 'segundo' | 'postre';
+    menu: 'normal' | 'vegano' | 'bocadillo';
 }
 
 export interface PlatoResponse {

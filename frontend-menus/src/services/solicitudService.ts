@@ -1,0 +1,13 @@
+import api from './api';
+
+export const solicitudService = {
+    async enviarSolicitud(data: {
+        fecha_para_la_comida: string;
+        primero_id: number;
+        segundo_id: number;
+        postre_id: number;
+    }) {
+        const response = await api.post('/solicitudes', data);
+        return response.data;
+    }
+};

@@ -6,12 +6,14 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PlatoController;
 use App\Http\Controllers\Api\MenuDiarioController;
+use App\Http\Controllers\Api\SolicitudController;
 
 // Ruta pública de login
 Route::post('/login', [AuthController::class, 'login']);
 
 // Rutas protegidas por Sanctum
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/solicitudes', [SolicitudController::class, 'store']);
     
     // Solo accesible para usuarios con habilidad 'admin' 
     Route::middleware('ability:admin')->group(function () {

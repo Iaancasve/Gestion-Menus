@@ -17,4 +17,14 @@ class Solicitud extends Model
         'segundo_id',
         'postre_id',
     ];
+
+    public function primero() {
+    return $this->belongsTo(Plato::class, 'primero_id');
+    }
+    public function segundo() {
+    return $this->belongsTo(Plato::class, 'segundo_id');
+    }
+    public function postre() {
+    return $this->belongsTo(Plato::class, 'postre_id');
+    }
 }

@@ -9,5 +9,10 @@ export const solicitudService = {
     }) {
         const response = await api.post('/solicitudes', data);
         return response.data;
+    },
+
+    async getMisSolicitudes() {
+        const response = await api.get('/mis-solicitudes');
+        return response.data;
     }
 };

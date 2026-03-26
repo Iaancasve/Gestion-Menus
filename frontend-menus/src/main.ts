@@ -6,6 +6,7 @@ import { renderAdminPanel } from './components/adminPanel';
 import { renderPlatosPanel } from './components/platosPanel';
 import { renderMenuPanel } from './components/menuPanel';
 import { renderPedidoMenu } from './components/pedidoMenu';
+import { renderMisPedidos } from './components/misPedidos'; // Asegúrate de haber creado este archivo
 
 const appDiv = document.querySelector<HTMLDivElement>('#app')!;
 
@@ -38,17 +39,19 @@ function navigateTo(page: string) {
                 <p>Utiliza el menú superior o las opciones de abajo para comenzar.</p>
                 <div class="home-options" style="display: flex; gap: 10px; margin-top: 20px; justify-content: center;">
                     <button id="btn-ir-pedido" class="btn-primary">Pedir Menú</button>
-                    <button class="btn-secondary" disabled>Ver mis Pedidos</button>
-                    
+                    <button id="btn-ver-pedidos" class="btn-secondary">Ver mis Pedidos</button>
                 </div>
             </div>
         `;
         
-        // Listener para el botón de la nueva opción
+        // Listeners para los botones de la home
         document.getElementById('btn-ir-pedido')?.addEventListener('click', () => navigateTo('pedir'));
+        document.getElementById('btn-ver-pedidos')?.addEventListener('click', () => navigateTo('mis-pedidos'));
 
     } else if (page === 'pedir') {
         renderPedidoMenu(mainView);
+    } else if (page === 'mis-pedidos') {
+        renderMisPedidos(mainView);
     } else if (page === 'admin') {
         renderAdminPanel(mainView);
     } else if (page === 'platos') {
@@ -57,5 +60,10 @@ function navigateTo(page: string) {
         renderMenuPanel(mainView);
     }
 }
+
+// Escuchar evento global de navegación (útil para redirecciones desde otros componentes)
+window.addEventListener('navigate', (e: any) => {
+    navigateTo(e.detail);
+});
 
 init();

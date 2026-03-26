@@ -28,4 +28,14 @@ class SolicitudController extends Controller
 
         return response()->json($solicitud, 201);
     }
+
+    public function index()
+    {
+    // Obtenemos las solicitudes del usuario actual con sus platos relacionados
+    return Solicitud::where('user_id', auth()->id())
+        ->with(['primero', 'segundo', 'postre'])
+        ->orderBy('fecha_para_la_comida', 'desc')
+        ->get();
+    }
+    
 }

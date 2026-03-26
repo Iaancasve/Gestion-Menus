@@ -14,6 +14,7 @@ Route::post('/login', [AuthController::class, 'login']);
 // Rutas protegidas por Sanctum
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/solicitudes', [SolicitudController::class, 'store']);
+    Route::get('/mis-solicitudes', [SolicitudController::class, 'index']);
     
     // Solo accesible para usuarios con habilidad 'admin' 
     Route::middleware('ability:admin')->group(function () {

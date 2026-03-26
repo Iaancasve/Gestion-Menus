@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Solicitud extends Model
 {
-    use HasFactory;
+    // Indica el nombre de la tabla si es distinto al plural en inglés
+    protected $table = 'solicitudes';
 
+    // Estos campos son obligatorios para que el controlador pueda guardar
     protected $fillable = [
         'user_id',
         'fecha_para_la_comida',

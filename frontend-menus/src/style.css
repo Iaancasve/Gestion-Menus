@@ -385,3 +385,110 @@ body {
     padding: 2rem;
     font-style: italic;
 }
+
+/* Contenedor principal del pedido */
+.pedido-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Grupos de selección (Primero, Segundo, Postre) */
+.categoria-grupo {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border: 1px solid #edf2f7;
+    border-radius: 8px;
+    background: #f8fafc;
+}
+
+.categoria-grupo h3 {
+    margin-top: 0;
+    color: #2d3748;
+    font-size: 1.1rem;
+    border-bottom: 2px solid #3182ce;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+/* Estilo para las opciones de radio */
+.opcion-plato {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.opcion-plato:hover {
+    border-color: #3182ce;
+    background: #ebf8ff;
+}
+
+.opcion-plato input[type="radio"] {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.opcion-plato label {
+    cursor: pointer;
+    flex: 1;
+    font-weight: 500;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #3182ce;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #2b6cb0;
+}
+
+/* Estilos para el formulario de selección inicial */
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #4a5568;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+    outline: none;
+}
+
+.form-input:focus {
+    border-color: #3182ce;
+}
+
+.pedido-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #edf2f7;
+}

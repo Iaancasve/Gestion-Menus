@@ -39,7 +39,7 @@ function navigateTo(page: string) {
                 <div class="home-options" style="display: flex; gap: 10px; margin-top: 20px; justify-content: center;">
                     <button id="btn-ir-pedido" class="btn-primary">Pedir Menú</button>
                     <button class="btn-secondary" disabled>Ver mis Pedidos</button>
-                    <button class="btn-secondary" disabled>Perfil</button>
+                    
                 </div>
             </div>
         `;

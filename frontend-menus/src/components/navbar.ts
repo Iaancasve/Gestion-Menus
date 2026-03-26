@@ -14,7 +14,7 @@ export function renderNavbar(container: HTMLElement, onNavigate: (page: string) 
                     ${userInfo.isAdmin ? `
                         <a href="#" id="link-admin">Usuarios</a>
                         <a href="#" id="link-platos">Platos</a>
-                        <a href="#" id="link-menu">Menú del Día</a> ` : ''}
+                        ` : ''}
                 </div>
             </div>
             <div class="user-menu">

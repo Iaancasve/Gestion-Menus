@@ -15,6 +15,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/solicitudes', [SolicitudController::class, 'store']);
     Route::get('/mis-solicitudes', [SolicitudController::class, 'index']);
+    Route::put('/solicitudes/{id}', [SolicitudController::class, 'update']);
+    Route::delete('/solicitudes/{id}', [SolicitudController::class, 'destroy']);
     
     // Solo accesible para usuarios con habilidad 'admin' 
     Route::middleware('ability:admin')->group(function () {

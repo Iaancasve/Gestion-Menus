@@ -6,7 +6,8 @@ import { renderAdminPanel } from './components/adminPanel';
 import { renderPlatosPanel } from './components/platosPanel';
 import { renderMenuPanel } from './components/menuPanel';
 import { renderPedidoMenu } from './components/pedidoMenu';
-import { renderMisPedidos } from './components/misPedidos'; // Asegúrate de haber creado este archivo
+import { renderMisPedidos } from './components/misPedidos'; 
+import { renderEditarPedido } from './components/editarPedido';
 
 const appDiv = document.querySelector<HTMLDivElement>('#app')!;
 
@@ -61,9 +62,13 @@ function navigateTo(page: string) {
     }
 }
 
-// Escuchar evento global de navegación (útil para redirecciones desde otros componentes)
 window.addEventListener('navigate', (e: any) => {
     navigateTo(e.detail);
+});
+
+window.addEventListener('edit-pedido', (e: any) => {
+    const mainView = document.getElementById('main-view')!;
+    renderEditarPedido(mainView, e.detail); 
 });
 
 init();

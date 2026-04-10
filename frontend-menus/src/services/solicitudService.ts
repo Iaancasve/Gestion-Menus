@@ -14,5 +14,14 @@ export const solicitudService = {
     async getMisSolicitudes() {
         const response = await api.get('/mis-solicitudes');
         return response.data;
-    }
+    },
+    
+    async actualizarSolicitud(id: number, data: any) {
+    const response = await api.put(`/solicitudes/${id}`, data);
+    return response.data;
+},
+async eliminarSolicitud(id: number) {
+    const response = await api.delete(`/solicitudes/${id}`);
+    return response.data;
+}
 };

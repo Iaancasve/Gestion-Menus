@@ -37,5 +37,32 @@ class SolicitudController extends Controller
         ->orderBy('fecha_para_la_comida', 'desc')
         ->get();
     }
+
+    public function update(Request $request, $id)
+    {
+    $solicitud = Solicitud::where('id', $id)
+        ->where('user_id', auth()->id())
+        ->firstOrFail();
+
+    $validated = $request->validate([
+        'primero_id' => 'required|exists:platos,id',
+        'segundo_id' => 'required|exists:platos,id',
+        'postre_id' => 'required|exists:platos,id',
+    ]);
+
+    $solicitud->update($validated);
+
+    return response()->json($solicitud);
+    }
     
+    public function destroy($id)
+{
+    $solicitud = Solicitud::where('id', $id)
+        ->where('user_id', auth()->id())
+        ->firstOrFail();
+
+    $solicitud->delete();
+
+    return response()->json(['message' => 'Pedido cancelado correctamente'], 200);
+}
 }

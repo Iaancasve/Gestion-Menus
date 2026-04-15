@@ -65,4 +65,15 @@ class SolicitudController extends Controller
 
     return response()->json(['message' => 'Pedido cancelado correctamente'], 200);
 }
+
+public function pedidosHoy()
+{
+    try {
+        return Solicitud::whereDate('fecha_para_la_comida', now()->toDateString())
+            ->with(['user', 'primero', 'segundo', 'postre'])
+            ->get();
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
 }

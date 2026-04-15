@@ -14,6 +14,7 @@ export function renderNavbar(container: HTMLElement, onNavigate: (page: string) 
                     ${userInfo.isAdmin ? `
                         <a href="#" id="link-admin">Usuarios</a>
                         <a href="#" id="link-platos">Platos</a>
+                        <a href="#" id="link-all-pedidos">Pedidos</a>
                         ` : ''}
                 </div>
             </div>
@@ -42,7 +43,13 @@ export function renderNavbar(container: HTMLElement, onNavigate: (page: string) 
         onNavigate('platos');
     });
 
-    // Evento para el nuevo enlace de Menú del Día
+    // Evento para ver todos los pedidos (Solo Admin)
+    document.getElementById('link-all-pedidos')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        onNavigate('admin-pedidos');
+    });
+
+    // Evento para el enlace de Menú del Día
     document.getElementById('link-menu')?.addEventListener('click', (e) => {
         e.preventDefault();
         onNavigate('menu');

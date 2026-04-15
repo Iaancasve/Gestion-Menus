@@ -8,6 +8,8 @@ import { renderMenuPanel } from './components/menuPanel';
 import { renderPedidoMenu } from './components/pedidoMenu';
 import { renderMisPedidos } from './components/misPedidos'; 
 import { renderEditarPedido } from './components/editarPedido';
+// 1. Importar el nuevo componente de pedidos de administración
+import { renderAdminPedidos } from './components/adminPedidos';
 
 const appDiv = document.querySelector<HTMLDivElement>('#app')!;
 
@@ -31,6 +33,8 @@ function init() {
 
 function navigateTo(page: string) {
     const mainView = document.getElementById('main-view')!;
+    if (!mainView) return;
+    
     mainView.innerHTML = ''; 
 
     if (page === 'home') {
@@ -59,6 +63,8 @@ function navigateTo(page: string) {
         renderPlatosPanel(mainView); 
     } else if (page === 'menu') {
         renderMenuPanel(mainView);
+    } else if (page === 'admin-pedidos') {
+        renderAdminPedidos(mainView);
     }
 }
 
@@ -68,7 +74,9 @@ window.addEventListener('navigate', (e: any) => {
 
 window.addEventListener('edit-pedido', (e: any) => {
     const mainView = document.getElementById('main-view')!;
-    renderEditarPedido(mainView, e.detail); 
+    if (mainView) {
+        renderEditarPedido(mainView, e.detail); 
+    }
 });
 
 init();

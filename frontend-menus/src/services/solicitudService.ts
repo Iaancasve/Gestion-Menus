@@ -23,5 +23,9 @@ export const solicitudService = {
 async eliminarSolicitud(id: number) {
     const response = await api.delete(`/solicitudes/${id}`);
     return response.data;
+},
+async getAllPedidosHoy() {
+    const response = await api.get('/admin/pedidos-hoy');
+    return response.data;
 }
 };

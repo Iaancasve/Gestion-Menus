@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('ability:admin')->group(function () {
         Route::apiResource('usuarios', UserController::class);
         Route::apiResource('platos', PlatoController::class);
+
+        Route::get('admin/pedidos-hoy', [SolicitudController::class, 'pedidosHoy']);
         
         // Rutas para el Menú Diario
         Route::get('menu-hoy', [MenuDiarioController::class, 'index']);

@@ -8,7 +8,6 @@ import { renderMenuPanel } from './components/menuPanel';
 import { renderPedidoMenu } from './components/pedidoMenu';
 import { renderMisPedidos } from './components/misPedidos'; 
 import { renderEditarPedido } from './components/editarPedido';
-// 1. Importar el nuevo componente de pedidos de administración
 import { renderAdminPedidos } from './components/adminPedidos';
 
 const appDiv = document.querySelector<HTMLDivElement>('#app')!;
@@ -38,14 +37,20 @@ function navigateTo(page: string) {
     mainView.innerHTML = ''; 
 
     if (page === 'home') {
+        // Lógica de restricción horaria para el botón
+        const esTarde = new Date().getHours() >= 11;
+
         mainView.innerHTML = `
             <div class="welcome-card">
                 <h1>Bienvenido al Sistema de Menús</h1>
                 <p>Utiliza el menú superior o las opciones de abajo para comenzar.</p>
                 <div class="home-options" style="display: flex; gap: 10px; margin-top: 20px; justify-content: center;">
-                    <button id="btn-ir-pedido" class="btn-primary">Pedir Menú</button>
+                    <button id="btn-ir-pedido" class="btn-primary" ${esTarde ? 'disabled' : ''}>
+                        ${esTarde ? 'Pedido no disponible' : 'Pedir Menú'}
+                    </button>
                     <button id="btn-ver-pedidos" class="btn-secondary">Ver mis Pedidos</button>
                 </div>
+                ${esTarde ? '<p style="color: #e74c3c; margin-top: 10px; font-size: 0.9rem;">⚠️ El plazo de pedidos cerró a las 11:00 AM</p>' : ''}
             </div>
         `;
         

@@ -11,6 +11,13 @@ class SolicitudController extends Controller
 {
     public function store(Request $request)
     {
+        // Verificar si son más de las 11:00 AM
+        if (now()->format('H:i') >= '11:00') {
+            return response()->json([
+                'message' => 'Lo sentimos, el plazo para realizar pedidos terminó a las 11:00 AM.'
+            ], 422); // Código 422: Unprocessable Entity
+        }
+
         $validated = $request->validate([
             'fecha_para_la_comida' => 'required|date',
             'primero_id' => 'required|exists:platos,id',
@@ -19,7 +26,7 @@ class SolicitudController extends Controller
         ]);
 
         $solicitud = Solicitud::create([
-            'user_id' => Auth::id(), // Obtiene el ID del usuario autenticado
+            'user_id' => Auth::id(),
             'fecha_para_la_comida' => $validated['fecha_para_la_comida'],
             'primero_id' => $validated['primero_id'],
             'segundo_id' => $validated['segundo_id'],
@@ -31,49 +38,49 @@ class SolicitudController extends Controller
 
     public function index()
     {
-    // Obtenemos las solicitudes del usuario actual con sus platos relacionados
-    return Solicitud::where('user_id', auth()->id())
-        ->with(['primero', 'segundo', 'postre'])
-        ->orderBy('fecha_para_la_comida', 'desc')
-        ->get();
+        // Obtenemos las solicitudes del usuario actual con sus platos relacionados
+        return Solicitud::where('user_id', auth()->id())
+            ->with(['primero', 'segundo', 'postre'])
+            ->orderBy('fecha_para_la_comida', 'desc')
+            ->get();
     }
 
     public function update(Request $request, $id)
     {
-    $solicitud = Solicitud::where('id', $id)
-        ->where('user_id', auth()->id())
-        ->firstOrFail();
+        $solicitud = Solicitud::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
 
-    $validated = $request->validate([
-        'primero_id' => 'required|exists:platos,id',
-        'segundo_id' => 'required|exists:platos,id',
-        'postre_id' => 'required|exists:platos,id',
-    ]);
+        $validated = $request->validate([
+            'primero_id' => 'required|exists:platos,id',
+            'segundo_id' => 'required|exists:platos,id',
+            'postre_id' => 'required|exists:platos,id',
+        ]);
 
-    $solicitud->update($validated);
+        $solicitud->update($validated);
 
-    return response()->json($solicitud);
+        return response()->json($solicitud);
     }
-    
+
     public function destroy($id)
-{
-    $solicitud = Solicitud::where('id', $id)
-        ->where('user_id', auth()->id())
-        ->firstOrFail();
+    {
+        $solicitud = Solicitud::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
 
-    $solicitud->delete();
+        $solicitud->delete();
 
-    return response()->json(['message' => 'Pedido cancelado correctamente'], 200);
-}
-
-public function pedidosHoy()
-{
-    try {
-        return Solicitud::whereDate('fecha_para_la_comida', now()->toDateString())
-            ->with(['user', 'primero', 'segundo', 'postre'])
-            ->get();
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
+        return response()->json(['message' => 'Pedido cancelado correctamente'], 200);
     }
-}
+
+    public function pedidosHoy()
+    {
+        try {
+            return Solicitud::whereDate('fecha_para_la_comida', now()->toDateString())
+                ->with(['user', 'primero', 'segundo', 'postre'])
+                ->get();
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

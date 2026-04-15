@@ -3,20 +3,34 @@ import { solicitudService } from '../services/solicitudService';
 import type { Plato } from '../types/plato';
 
 export async function renderPedidoMenu(container: HTMLElement) {
-    // 1. Lógica de Restricción de Fechas (Esta semana, desde hoy hasta el domingo)
+    // --- RESTRICCIÓN HORARIA (11:00 AM) ---
+    const ahora = new Date();
+    const horaActual = ahora.getHours();
+
+    if (horaActual >= 11) {
+        container.innerHTML = `
+            <div class="pedido-container" style="border-top: 5px solid #e74c3c; text-align: center;">
+                <h2 style="color: #e74c3c;">⚠️ Plazo Finalizado</h2>
+                <p>Lo sentimos, el horario para realizar pedidos termina a las <strong>11:00 AM</strong>.</p>
+                <p style="margin-bottom: 20px;">Por favor, vuelve mañana antes de la hora límite.</p>
+                <button id="btn-volver-home" class="btn-secondary">Volver al Inicio</button>
+            </div>
+        `;
+        document.getElementById('btn-volver-home')?.addEventListener('click', () => {
+            window.dispatchEvent(new CustomEvent('navigate', { detail: 'home' }));
+        });
+        return; // Detenemos la ejecución
+    }
+
+    // --- LÓGICA DE FECHAS ---
     const hoy = new Date();
-    const diaSemana = hoy.getDay(); // 0 (domingo) a 6 (sábado)
-    
-    // Calculamos el lunes de la semana actual
+    const diaSemana = hoy.getDay();
     const lunes = new Date(hoy);
     const diferenciaLunes = diaSemana === 0 ? -6 : 1 - diaSemana;
     lunes.setDate(hoy.getDate() + diferenciaLunes);
-    
-    // Calculamos el domingo de la semana actual
     const domingo = new Date(lunes);
     domingo.setDate(lunes.getDate() + 6);
 
-    // Formateamos para los atributos min y max del input date (YYYY-MM-DD)
     const minFecha = hoy.toISOString().split('T')[0];
     const maxFecha = domingo.toISOString().split('T')[0];
 
@@ -61,7 +75,7 @@ export async function renderPedidoMenu(container: HTMLElement) {
         </div>
     `;
 
-    // Selectores de elementos
+    // (Selectores y Eventos se mantienen igual que tu código original...)
     const fechaInput = document.getElementById('fecha-comida') as HTMLInputElement;
     const tipoMenuSelect = document.getElementById('tipo-menu') as HTMLSelectElement;
     const btnContinuar = document.getElementById('btn-continuar');
@@ -70,76 +84,60 @@ export async function renderPedidoMenu(container: HTMLElement) {
     const paso1 = document.getElementById('paso-1')!;
     const paso2 = document.getElementById('paso-2')!;
 
-    // Evento para pasar al paso 2
     btnContinuar?.addEventListener('click', async () => {
         if (!fechaInput.value) return alert('Por favor, selecciona una fecha válida.');
-
         try {
-            // Mostrar un indicador de carga simple
             btnContinuar.innerText = 'Cargando platos...';
             btnContinuar.setAttribute('disabled', 'true');
-
             const platos: Plato[] = await platoService.getAll();
             const tipoSeleccionado = tipoMenuSelect.value;
-
-            // Filtrar platos por el tipo de menú (normal, vegano, bocadillo)
             const platosFiltrados = platos.filter(p => p.menu === tipoSeleccionado);
 
             if (platosFiltrados.length === 0) {
-                alert('No hay platos registrados para esta categoría de menú.');
-                btnContinuar.innerText = 'Continuar a selección de platos';
-                btnContinuar.removeAttribute('disabled');
+                alert('No hay platos registrados para esta categoría.');
                 return;
             }
-
             renderSeleccionPlatos(platosFiltrados);
             paso1.style.display = 'none';
             paso2.style.display = 'block';
         } catch (error) {
-            console.error(error);
-            alert('Error al obtener los platos del servidor.');
+            alert('Error al conectar con el servidor.');
         } finally {
             btnContinuar.innerText = 'Continuar a selección de platos';
             btnContinuar.removeAttribute('disabled');
         }
     });
 
-    // Función para renderizar los platos con el nuevo diseño
     function renderSeleccionPlatos(platos: Plato[]) {
         const div = document.getElementById('seleccion-platos')!;
         const categorias: ('primero' | 'segundo' | 'postre')[] = ['primero', 'segundo', 'postre'];
-        
         div.innerHTML = categorias.map(cat => {
             const platosDeCategoria = platos.filter(p => p.tipo === cat).slice(0, 3);
             return `
                 <div class="categoria-grupo">
                     <h3>Selecciona un ${cat}</h3>
-                    ${platosDeCategoria.length > 0 ? platosDeCategoria.map(p => `
+                    ${platosDeCategoria.map(p => `
                         <div class="opcion-plato">
                             <input type="radio" name="${cat}" id="plato-${p.id}" value="${p.id}">
                             <label for="plato-${p.id}">${p.nombre}</label>
                         </div>
-                    `).join('') : '<p>No hay platos disponibles.</p>'}
+                    `).join('')}
                 </div>
             `;
         }).join('');
     }
 
-    // Evento para volver al paso 1
     btnVolver?.addEventListener('click', () => {
         paso2.style.display = 'none';
         paso1.style.display = 'block';
     });
 
-    // Evento final para guardar en la base de datos
     btnEnviar?.addEventListener('click', async () => {
         const primeroId = document.querySelector<HTMLInputElement>('input[name="primero"]:checked')?.value;
         const segundoId = document.querySelector<HTMLInputElement>('input[name="segundo"]:checked')?.value;
         const postreId = document.querySelector<HTMLInputElement>('input[name="postre"]:checked')?.value;
 
-        if (!primeroId || !segundoId || !postreId) {
-            return alert('Debes seleccionar un plato de cada categoría para completar el pedido.');
-        }
+        if (!primeroId || !segundoId || !postreId) return alert('Selecciona un plato de cada categoría.');
 
         try {
             await solicitudService.enviarSolicitud({
@@ -148,13 +146,10 @@ export async function renderPedidoMenu(container: HTMLElement) {
                 segundo_id: Number(segundoId),
                 postre_id: Number(postreId)
             });
-
             alert('✅ ¡Pedido realizado con éxito!');
-            // Redirigir a inicio tras el éxito
             window.dispatchEvent(new CustomEvent('navigate', { detail: 'home' }));
-            // Si no tienes el evento global configurado, puedes usar: location.reload();
         } catch (error) {
-            alert('Hubo un error al guardar tu pedido. Inténtalo de nuevo.');
+            alert('Error al guardar el pedido. ¿Quizás ya pasaron las 11:00 AM?');
         }
     });
 }
